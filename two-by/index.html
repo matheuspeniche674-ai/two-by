@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TWO BY — Plataforma de Mercado Financeiro & B3</title>
+  <meta name="description" content="Acompanhe cotações, analise o mercado financeiro brasileiro e Bolsa de Valores B3, com gráficos de candlesticks, carteira de investimentos e notícias em tempo real." />
+  <meta property="og:title" content="TWO BY — Plataforma de Mercado Financeiro & B3" />
+  <meta property="og:description" content="Terminal financeiro moderno para acompanhamento de ações, ETFs, FIIs e renda fixa na B3." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Folha de Estilos Principal (Tema Azul Elétrico B3) -->
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- SIDEBAR FIXA COM LOGO DE DOIS 'B's ([BB] TWO BY) -->
+    <aside class="sidebar" id="main-sidebar">
+      <div class="sidebar-header">
+        <a href="#" class="brand-logo" data-goto="view-inicio" title="TWO BY — Mercado B3">
+          <!-- Nova Logo Oficial TWO BY B2 -->
+          <img src="./assets/aistudio/logo_b2_badge_dark_tight_237b8896.webp" alt="TWO BY B2" class="brand-logo-img" />
+          <div class="brand-text-block">
+            <div class="brand-title">TWO <span>BY</span></div>
+            <div class="brand-subtitle">BRASIL BOLSA BALCÃO</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Menu de Navegação SPA -->
+      <nav class="sidebar-nav">
+        <!-- 1. Início -->
+        <a class="nav-item active" data-view="view-inicio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span>Início</span>
+        </a>
+
+        <!-- 2. Mercados -->
+        <a class="nav-item" data-view="view-mercados">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span>Mercados</span>
+        </a>
+
+        <!-- 3. Ações -->
+        <a class="nav-item" data-view="view-acoes">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+          <span>Ações</span>
+        </a>
+
+        <!-- 4. ETFs -->
+        <a class="nav-item" data-view="view-etfs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+          </svg>
+          <span>ETFs</span>
+        </a>
+
+        <!-- 5. FIIs -->
+        <a class="nav-item" data-view="view-fiis">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+            <line x1="9" y1="22" x2="9" y2="2"></line>
+            <line x1="15" y1="22" x2="15" y2="2"></line>
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+          </svg>
+          <span>FIIs</span>
+        </a>
+
+        <!-- 6. Renda Fixa -->
+        <a class="nav-item" data-view="view-renda-fixa">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span>Renda Fixa</span>
+        </a>
+
+        <!-- 7. Carteira -->
+        <a class="nav-item" data-view="view-carteira">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <path d="M7 15h0M2 9.5h20"></path>
+          </svg>
+          <span>Carteira</span>
+        </a>
+
+        <!-- 8. Análises -->
+        <a class="nav-item" data-view="view-analises">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18"></path>
+            <path d="m19 9-5 5-4-4-3 3"></path>
+          </svg>
+          <span>Análises</span>
+        </a>
+
+        <!-- 9. Notícias -->
+        <a class="nav-item" data-view="view-noticias">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"></path>
+            <path d="M18 14h-8"></path>
+            <path d="M15 18h-5"></path>
+            <path d="M10 6h8v4h-8V6Z"></path>
+          </svg>
+          <span>Notícias</span>
+        </a>
+
+        <!-- 10. Minha Conta / Perfil -->
+        <a class="nav-item" data-view="view-conta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>Perfil</span>
+        </a>
+      </nav>
+
+      <!-- Rodapé da Sidebar -->
+      <div class="sidebar-footer">
+        <div class="sidebar-promo-card">
+          <h4>Invista no seu futuro com inteligência</h4>
+          <p>TWO BY — Seu próximo passo no mercado financeiro.</p>
+          <div class="market-status-pill">
+            <span class="status-dot"></span>
+            <span>Mercado Aberto • 10:24 - 28/10/2026</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- WRAPPER PRINCIPAL -->
+    <div class="main-wrapper">
+      
+      <!-- HEADER DO TOPO -->
+      <header class="header">
+        <div class="header-left">
+          <!-- Botão mobile -->
+          <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Abrir menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+
+          <!-- Barra de Pesquisa Global -->
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" class="search-input" id="global-search-input" placeholder="Buscar por ativo, índice ou empresa..." />
+            <span class="search-shortcut">/</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Conexão Oficial B3 em Tempo Real -->
+          <button class="b3-live-indicator-btn" id="btn-sync-b3-live" title="Cotações Oficiais da B3 conectadas. Clique para sincronizar novamente.">
+            <span class="live-pulse-dot"></span>
+            <span id="b3-live-status-label">B3 Oficial Conectada</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" id="b3-sync-icon">
+              <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+            </svg>
+          </button>
+
+          <!-- Botão de Notificações -->
+          <button class="header-action-btn" id="btn-header-notifications" title="Notificações">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notification-badge"></span>
+          </button>
+
+          <!-- Alternância de Tema Claro/Escuro -->
+          <button class="header-action-btn" id="theme-toggle-btn" title="Alternar tema">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+          </button>
+
+          <!-- Botão Instruções VS Code -->
+          <button class="btn-secondary" id="btn-vscode-export" style="padding:6px 12px;font-size:11.5px;gap:6px;" title="Ver estrutura para VS Code">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            <span>Executar no VS Code</span>
+          </button>
+
+          <!-- Perfil do Usuário -->
+          <div class="user-profile-menu" data-goto="view-conta" title="Minha Conta e Foto de Perfil">
+            <img src="./assets/images/user_avatar_1793115183912.jpg" alt="Matheus Penicwh" class="user-avatar-img user-avatar-sync" id="header-user-avatar" onerror="this.src='./assets/images/b3_building_hero_1793115167050.jpg'" />
+            <div class="user-info">
+              <span class="user-name" id="header-user-name">Matheus Penicwh</span>
+              <span class="user-role">Conta Real</span>
+            </div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="color:var(--text-muted);">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </div>
+      </header>
+
+      <!-- CORPO PRINCIPAL COM AS VISUALIZAÇÕES -->
+      <main class="content-body">
+        
+        <!-- ==============================================================
+             1. PÁGINA INICIAL (DASHBOARD)
+             ============================================================== -->
+        <section id="view-inicio" class="view-section active-view">
+          
+          <!-- Carousel Superior Interativo com Vídeo e Banners Arrastáveis -->
+          <div class="hero-carousel-wrapper" id="hero-carousel-wrapper">
+            <div class="hero-carousel-track" id="hero-carousel-track">
+              
+              <!-- SLIDE 1: Vídeo Skyline B3 com Candlesticks -->
+              <div class="hero-slide active" data-slide-index="0">
+                <video class="hero-slide-media hero-slide-video" autoplay loop muted playsinline poster="./assets/aistudio/banner_skyline_chart_c435816c.webp">
+                  <source src="./assets/aistudio/banner_skyline_video_1a0a9295.mp4" type="video/mp4">
+                </video>
+              </div>
+
+              <!-- SLIDE 2: Candlesticks Azul Neon Terminal -->
+              <div class="hero-slide" data-slide-index="1">
+                <img src="./assets/aistudio/banner_terminal_closeup_fc023a49.jpg" class="hero-slide-media" alt="Gráfico Candlestick B3" />
+              </div>
+
+              <!-- SLIDE 3: Mesa de Operações com Monitores e Skyline Noturno -->
+              <div class="hero-slide" data-slide-index="2">
+                <img src="./assets/aistudio/banner_desk_monitors_c43160e0.webp" class="hero-slide-media" alt="Mesa de Investimentos" />
+              </div>
+
+              <!-- SLIDE 4: Linha de Tendência e Dados Neon -->
+              <div class="hero-slide" data-slide-index="3">
+                <img src="./assets/aistudio/banner_data_grid_6ab13289.webp" class="hero-slide-media" alt="Tendência e Indicadores" />
+              </div>
+
+              <!-- SLIDE 5: Gráfico Panorâmico de Alta Resolução -->
+              <div class="hero-slide" data-slide-index="4">
+                <img src="./assets/aistudio/banner_terminal_closeup_247a40b7.webp" class="hero-slide-media" alt="Terminal Financeiro" />
+              </div>
+
+            </div>
+
+            <!-- Controles do Carousel: Setas Laterais e Dots -->
+            <button class="carousel-arrow carousel-arrow-prev" id="carousel-btn-prev" aria-label="Slide anterior">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <button class="carousel-arrow carousel-arrow-next" id="carousel-btn-next" aria-label="Próximo slide">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+
+            <!-- Indicadores (Dots) e Dica de Arrastar -->
+            <div class="carousel-footer-bar">
+              <div class="carousel-drag-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                  <polyline points="8 7 3 12 8 17"></polyline>
+                  <polyline points="16 7 21 12 16 17"></polyline>
+                  <line x1="3" y1="12" x2="21" y2="12"></line>
+                </svg>
+                <span>Arraste para navegar</span>
+              </div>
+              <div class="carousel-dots-container" id="carousel-dots-container">
+                <button class="carousel-dot active" data-index="0" aria-label="Slide 1"></button>
+                <button class="carousel-dot" data-index="1" aria-label="Slide 2"></button>
+                <button class="carousel-dot" data-index="2" aria-label="Slide 3"></button>
+                <button class="carousel-dot" data-index="3" aria-label="Slide 4"></button>
+                <button class="carousel-dot" data-index="4" aria-label="Slide 5"></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Indicadores do Mercado (4 Colunas) -->
+          <div class="market-cards-grid" id="market-indices-grid">
+            <!-- Gerado dinamicamente pelo js/app.js -->
+          </div>
+
+          <!-- Grid Principal do Gráfico + Simulador de Ordens -->
+          <div class="dashboard-main-grid">
+            
+            <!-- Painel do Gráfico Candlestick -->
+            <div class="chart-panel-card">
+              <div class="chart-panel-header">
+                <div class="stock-identity">
+                  <div class="stock-logo-badge" id="chart-stock-badge">BR</div>
+                  <div class="stock-name-box">
+                    <h3 id="chart-stock-name">PETR4 <span>Petróleo Brasileiro S.A.</span></h3>
+                    <div class="stock-price-block">
+                      <span class="stock-current-price tabular-nums" id="chart-stock-price">R$ 32,18</span>
+                      <span class="stock-price-diff tabular-nums positive" id="chart-stock-diff">▲ +2,41% (+0,76)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Ribbon de Estatísticas -->
+                <div class="chart-stats-ribbon">
+                  <div class="ribbon-item">
+                    <span class="ribbon-label">Máxima</span>
+                    <span class="ribbon-val tabular-nums" id="stat-ribbon-max">R$ 32,48</span>
+                  </div>
+                  <div class="ribbon-item">
+                    <span class="ribbon-label">Mínima</span>
+                    <span class="ribbon-val tabular-nums" id="stat-ribbon-min">R$ 31,52</span>
+                  </div>
+                  <div class="ribbon-item">
+                    <span class="ribbon-label">Volume</span>
+                    <span class="ribbon-val tabular-nums" id="stat-ribbon-vol">112,4M</span>
+                  </div>
+                  <div class="ribbon-item">
+                    <span class="ribbon-label">Negócios</span>
+                    <span class="ribbon-val tabular-nums" id="stat-ribbon-trades">82,3k</span>
+                  </div>
+                </div>
+
+                <!-- Filtros de Timeframe (Botão azul idêntico à foto de referência) -->
+                <div class="timeframe-filter-bar">
+                  <button class="timeframe-btn active" data-period="1D">1D</button>
+                  <button class="timeframe-btn" data-period="1S">1S</button>
+                  <button class="timeframe-btn" data-period="1M">1M</button>
+                  <button class="timeframe-btn" data-period="3M">3M</button>
+                  <button class="timeframe-btn" data-period="6M">6M</button>
+                  <button class="timeframe-btn" data-period="1A">1A</button>
+                  <button class="timeframe-btn" data-period="5A">5A</button>
+                </div>
+              </div>
+
+              <!-- Área do Gráfico de Candlesticks + Barra Lateral de Ferramentas -->
+              <div class="candlestick-wrapper">
+                <div class="chart-drawing-tools">
+                  <button class="tool-icon-btn active" title="Mira (Crosshair)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="22" y1="12" x2="18" y2="12"></line>
+                      <line x1="6" y1="12" x2="2" y2="12"></line>
+                      <line x1="12" y1="6" x2="12" y2="2"></line>
+                      <line x1="12" y1="22" x2="12" y2="18"></line>
+                    </svg>
+                  </button>
+                  <button class="tool-icon-btn" title="Linha de Tendência">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                      <line x1="4" y1="20" x2="20" y2="4"></line>
+                    </svg>
+                  </button>
+                  <button class="tool-icon-btn" title="Retração Fibonacci">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                      <line x1="3" y1="6" x2="21" y2="6"></line>
+                      <line x1="3" y1="12" x2="21" y2="12"></line>
+                      <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                  </button>
+                  <button class="tool-icon-btn" title="Região de Suporte/Resistência">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                      <rect x="3" y="8" width="18" height="8" rx="1"></rect>
+                    </svg>
+                  </button>
+                  <button class="tool-icon-btn" title="Texto e Anotações">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                      <polyline points="4 7 4 4 20 4 20 7"></polyline>
+                      <line x1="12" y1="4" x2="12" y2="20"></line>
+                    </svg>
+                  </button>
+                </div>
+                <canvas id="main-candlestick-chart" class="main-chart-canvas"></canvas>
+              </div>
+            </div>
+
+            <!-- Simulador de Ordens Rápido (Boleta de Negociação) -->
+            <div class="order-simulator-card">
+              <div class="order-tabs-switch">
+                <button class="order-tab-btn buy-active" id="order-tab-buy">Comprar</button>
+                <button class="order-tab-btn" id="order-tab-sell">Vender</button>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Tipo de ordem</label>
+                <select class="select-custom" id="order-type-select">
+                  <option value="Ordem a mercado">Ordem a mercado</option>
+                  <option value="Ordem limitada">Ordem limitada</option>
+                  <option value="Stop móvel">Stop móvel</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Quantidade de ações</label>
+                <div class="quantity-stepper">
+                  <button class="stepper-btn" id="qty-minus-btn" type="button">−</button>
+                  <input type="number" class="stepper-input tabular-nums" id="order-qty-input" value="100" min="10" step="100" />
+                  <button class="stepper-btn" id="qty-plus-btn" type="button">+</button>
+                </div>
+              </div>
+
+              <div class="order-summary-box">
+                <div class="summary-row">
+                  <span style="color:var(--text-secondary);">Saldo disponível:</span>
+                  <span class="tabular-nums" id="order-available-balance">R$ 1.250,00</span>
+                </div>
+                <div class="summary-row">
+                  <span style="color:var(--text-secondary);">Taxa B3 / Emolumentos:</span>
+                  <span class="tabular-nums">Isento (Demo)</span>
+                </div>
+                <div class="summary-row">
+                  <span>Valor estimado:</span>
+                  <span class="tabular-nums" style="color:var(--accent-cyan);font-size:14px;" id="order-estimated-value">R$ 3.218,00</span>
+                </div>
+              </div>
+
+              <button class="btn-execute-order" id="btn-execute-order-action">
+                Comprar PETR4
+              </button>
+            </div>
+          </div>
+
+          <!-- Segunda Linha: Alocação de Ativos + Maiores Altas e Baixas -->
+          <div class="secondary-grid">
+            
+            <!-- Meus Ativos (Donut) -->
+            <div class="panel-card">
+              <div class="panel-header-action">
+                <h3 class="panel-title">Meus Ativos</h3>
+                <a class="panel-link" data-goto="view-carteira">Ver carteira →</a>
+              </div>
+              <div class="donut-container">
+                <div class="donut-canvas-box">
+                  <canvas id="portfolio-donut-chart" width="130" height="130"></canvas>
+                </div>
+                <div class="donut-legend-list">
+                  <div>
+                    <div style="font-size:11px;color:var(--text-muted);">VALOR TOTAL</div>
+                    <div class="tabular-nums" style="font-size:19px;font-weight:800;" id="donut-total-value">R$ 12.548,32</div>
+                    <div class="tabular-nums positive" style="font-size:11.5px;font-weight:700;" id="donut-total-diff">▲ +2,76% (hoje)</div>
+                  </div>
+                  <div id="donut-legend-container" style="display:flex;flex-direction:column;gap:5px;margin-top:6px;">
+                    <!-- Preenchido via JS -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Principais Altas e Baixas -->
+            <div class="panel-card">
+              <div class="panel-header-action">
+                <h3 class="panel-title">Principais altas e baixas</h3>
+                <div class="altas-baixas-switch">
+                  <button class="tab-pill-btn active" id="tab-maiores-altas">Maiores Altas</button>
+                  <button class="tab-pill-btn" id="tab-maiores-baixas">Maiores Baixas</button>
+                </div>
+              </div>
+              <div style="overflow-x:auto;">
+                <table class="table-compact">
+                  <thead>
+                    <tr>
+                      <th>Ativo</th>
+                      <th>Preço</th>
+                      <th>Variação</th>
+                    </tr>
+                  </thead>
+                  <tbody id="altas-baixas-table-body">
+                    <!-- Preenchido via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Terceira Linha: Preview da Carteira, Desempenho e Notícias -->
+          <div class="tertiary-grid">
+            
+            <!-- Preview da Carteira -->
+            <div class="panel-card">
+              <div class="panel-header-action">
+                <h3 class="panel-title">Sua carteira</h3>
+                <a class="panel-link" data-goto="view-carteira">Ver detalhes →</a>
+              </div>
+              <div style="overflow-x:auto;">
+                <table class="table-compact">
+                  <thead>
+                    <tr>
+                      <th>Ativo</th>
+                      <th>Qtd</th>
+                      <th>PM</th>
+                      <th>Cotação</th>
+                      <th>Var.</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashboard-portfolio-body">
+                    <!-- Preenchido via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Desempenho da Carteira -->
+            <div class="panel-card">
+              <div class="panel-header-action">
+                <div>
+                  <h3 class="panel-title">Desempenho da carteira</h3>
+                  <div class="tabular-nums positive" style="font-size:13px;font-weight:700;margin-top:2px;" id="desempenho-percent-val">+4,83% no período</div>
+                </div>
+                <div class="timeframe-filter-bar" style="padding:2px;">
+                  <button class="timeframe-btn desempenho-filter-btn active" data-period="1M">1M</button>
+                  <button class="timeframe-btn desempenho-filter-btn" data-period="3M">3M</button>
+                  <button class="timeframe-btn desempenho-filter-btn" data-period="6M">6M</button>
+                  <button class="timeframe-btn desempenho-filter-btn" data-period="1A">1A</button>
+                </div>
+              </div>
+              <div style="height:150px;width:100%;margin-top:10px;">
+                <canvas id="carteira-performance-canvas" style="width:100%;height:100%;display:block;"></canvas>
+              </div>
+            </div>
+
+            <!-- Notícias do Mercado -->
+            <div class="panel-card">
+              <div class="panel-header-action">
+                <h3 class="panel-title">Notícias da Bolsa</h3>
+                <a class="panel-link" data-goto="view-noticias">Ver todas →</a>
+              </div>
+              <div id="dashboard-news-list">
+                <!-- Preenchido via JS -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             2. PÁGINA: MERCADOS
+             ============================================================== -->
+        <section id="view-mercados" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-box">
+              <h2>Visão Geral dos Mercados</h2>
+              <p>Acompanhamento integrado de índices brasileiros, globais, moedas e commodities da B3.</p>
+            </div>
+          </div>
+
+          <div class="market-cards-grid" id="mercados-cards-list" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));">
+            <!-- Gerado via JS -->
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             3. PÁGINA: AÇÕES
+             ============================================================== -->
+        <section id="view-acoes" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-box">
+              <h2>Ações</h2>
+              <p>Consulte o desempenho, múltiplos e liquidez das principais ações negociadas na B3.</p>
+            </div>
+            <div class="page-controls-bar">
+              <div class="search-box" style="width:240px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" class="search-input" id="acoes-search-input" placeholder="Filtrar ticker ou empresa..." />
+              </div>
+
+              <div class="segmented-filters">
+                <button class="filter-tab-btn acoes-filter-btn active" data-category="todas">Todas</button>
+                <button class="filter-tab-btn acoes-filter-btn" data-category="dividendos">Dividendos</button>
+                <button class="filter-tab-btn acoes-filter-btn" data-category="favoritos">Favoritos ★</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive-container">
+            <table class="data-table-full">
+              <thead>
+                <tr>
+                  <th style="width:40px;">★</th>
+                  <th class="sortable" data-sort="ticker">Ativo <span class="sort-icon">↕</span></th>
+                  <th class="sortable" data-sort="company">Empresa <span class="sort-icon">↕</span></th>
+                  <th class="sortable" data-sort="price">Preço <span class="sort-icon">↕</span></th>
+                  <th class="sortable" data-sort="change">Variação <span class="sort-icon">↕</span></th>
+                  <th class="sortable" data-sort="high">Máxima <span class="sort-icon">↕</span></th>
+                  <th class="sortable" data-sort="low">Mínima <span class="sort-icon">↕</span></th>
+                  <th class="sortable" data-sort="volumeVal">Volume <span class="sort-icon">↕</span></th>
+                  <th>Operação</th>
+                </tr>
+              </thead>
+              <tbody id="acoes-table-body">
+                <!-- Preenchido via JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             4. PÁGINA: ETFS
+             ============================================================== -->
+        <section id="view-etfs" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-box">
+              <h2>ETFs — Fundos de Índice</h2>
+              <p>Diversificação com custos reduzidos replicando índices da B3, S&P 500, Small Caps e Cripto.</p>
+            </div>
+          </div>
+
+          <div class="table-responsive-container">
+            <table class="data-table-full">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nome do ETF</th>
+                  <th>Índice Referência</th>
+                  <th>Preço da Cota</th>
+                  <th>Variação</th>
+                  <th>Taxa de Adm.</th>
+                  <th>Volume</th>
+                  <th>Negociação</th>
+                </tr>
+              </thead>
+              <tbody id="etfs-table-body">
+                <!-- Preenchido via JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             5. PÁGINA: FIIS (FUNDOS IMOBILIÁRIOS)
+             ============================================================== -->
+        <section id="view-fiis" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-box">
+              <h2>Fundos Imobiliários (FIIs)</h2>
+              <p>Renda passiva mensal isenta de IR em galpões logísticos, shoppings e recebíveis imobiliários.</p>
+            </div>
+          </div>
+
+          <div class="table-responsive-container">
+            <table class="data-table-full">
+              <thead>
+                <tr>
+                  <th>Ticker</th>
+                  <th>Fundo Imobiliário</th>
+                  <th>Segmento</th>
+                  <th>Cotação</th>
+                  <th>Variação</th>
+                  <th>DY (12M)</th>
+                  <th>Último Rendimento</th>
+                  <th>P/VP</th>
+                  <th>Liquidez Diária</th>
+                  <th>Ação</th>
+                </tr>
+              </thead>
+              <tbody id="fiis-table-body">
+                <!-- Preenchido via JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             6. PÁGINA: RENDA FIXA
+             ============================================================== -->
+        <section id="view-renda-fixa" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-box">
+              <h2>Renda Fixa</h2>
+              <p>Títulos públicos federais e ativos privados com garantia do FGC e previsibilidade.</p>
+            </div>
+          </div>
+
+          <div style="background:rgba(0,102,255,0.08);border:1px solid rgba(0,102,255,0.25);padding:12px 18px;border-radius:var(--radius-md);margin-bottom:20px;font-size:12.5px;color:var(--text-secondary);">
+            <strong style="color:var(--accent-cyan);">Aviso Importante:</strong> As taxas, rentabilidades e prazos apresentados abaixo são meramente demonstrativos para simulação de interface e não configuram oferta pública de valores mobiliários nem recomendação de investimento.
+          </div>
+
+          <div class="fixed-income-grid" id="renda-fixa-cards-grid">
+            <!-- Gerado via JS -->
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             7. PÁGINA: CARTEIRA DE INVESTIMENTOS
+             ============================================================== -->
+        <section id="view-carteira" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-box">
+              <h2>Minha Carteira</h2>
+              <p>Consolidação do patrimônio, rentabilidade histórica e extrato de ordens executadas.</p>
+            </div>
+            <div class="page-controls-bar">
+              <!-- Botão Nova Ordem exatamente no azul elétrico da foto de referência -->
+              <button class="btn-primary" id="btn-nova-ordem-modal">
+                <span>Nova ordem</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Cards de Resumo da Carteira -->
+          <div class="market-cards-grid" style="grid-template-columns: repeat(3, 1fr);margin-bottom:20px;">
+            <div class="indicator-card">
+              <div class="indicator-header">
+                <span class="indicator-name">PATRIMÔNIO TOTAL</span>
+              </div>
+              <div class="indicator-value tabular-nums" id="carteira-full-total">R$ 12.548,32</div>
+            </div>
+            <div class="indicator-card">
+              <div class="indicator-header">
+                <span class="indicator-name">SALDO DISPONÍVEL</span>
+              </div>
+              <div class="indicator-value tabular-nums" style="color:var(--bull-green);" id="carteira-full-saldo">R$ 1.250,00</div>
+            </div>
+            <div class="indicator-card">
+              <div class="indicator-header">
+                <span class="indicator-name">LUCRO / PREJUÍZO ACUMULADO</span>
+              </div>
+              <div class="indicator-value tabular-nums positive" id="carteira-full-lucro">+R$ 337,40 (+2,76%)</div>
+            </div>
+          </div>
+
+          <!-- Abas Posições / Ordens -->
+          <div class="panel-card">
+            <div class="panel-header-action" style="border-bottom:1px solid var(--border-subtle);padding-bottom:12px;">
+              <div class="segmented-filters">
+                <button class="filter-tab-btn active" id="tab-carteira-posicoes">Posições</button>
+                <button class="filter-tab-btn" id="tab-carteira-ordens">Ordens</button>
+                <button class="filter-tab-btn" id="tab-carteira-historico">Histórico</button>
+              </div>
+            </div>
+
+            <!-- Visualização de Posições -->
+            <div id="carteira-posicoes-view" style="overflow-x:auto;">
+              <table class="data-table-full">
+                <thead>
+                  <tr>
+                    <th>Ativo</th>
+                    <th>Quantidade</th>
+                    <th>Preço médio</th>
+                    <th>Cotação</th>
+                    <th>Variação</th>
+                    <th>Total</th>
+                    <th>Operação</th>
+                  </tr>
+                </thead>
+                <tbody id="carteira-full-positions-body">
+                  <!-- Preenchido via JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Visualização de Ordens -->
+            <div id="carteira-ordens-view" style="display:none;overflow-x:auto;">
+              <table class="data-table-full">
+                <thead>
+                  <tr>
+                    <th>ID Ordem</th>
+                    <th>Data/Hora</th>
+                    <th>Ativo</th>
+                    <th>Tipo</th>
+                    <th>Modalidade</th>
+                    <th>Quantidade</th>
+                    <th>Preço</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="carteira-full-orders-body">
+                  <!-- Preenchido via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             8. PÁGINA: ANÁLISES FINANCEIRAS
+             ============================================================== -->
+        <section id="view-analises" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-box">
+              <h2>Análises e Comparativo de Desempenho</h2>
+              <p>Compare retornos percentuais normalizados entre múltiplos ativos da B3 ao longo do tempo.</p>
+            </div>
+          </div>
+
+          <div class="panel-card" style="margin-bottom:20px;">
+            <div class="panel-header-action">
+              <h3 class="panel-title">Evolução Relativa (%) — PETR4 vs VALE3 vs IBOVESPA</h3>
+              <div style="display:flex;gap:12px;font-size:12px;">
+                <span style="color:#00E396;font-weight:700;">● PETR4 (+8,5%)</span>
+                <span style="color:#00C2FF;font-weight:700;">● VALE3 (+6,1%)</span>
+                <span style="color:#0066FF;font-weight:700;">● IBOVESPA (+4,2%)</span>
+              </div>
+            </div>
+            <div style="height:320px;width:100%;">
+              <canvas id="analises-comparison-canvas" style="width:100%;height:100%;display:block;"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             9. PÁGINA: NOTÍCIAS
+             ============================================================== -->
+        <section id="view-noticias" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-box">
+              <h2>Notícias da Bolsa</h2>
+              <p>Fatos relevantes, balanços corporativos e destaques macroeconômicos em tempo real.</p>
+            </div>
+          </div>
+
+          <div id="noticias-full-feed">
+            <!-- Gerado via JS -->
+          </div>
+        </section>
+
+        <!-- ==============================================================
+             10. PÁGINA: MINHA CONTA / PERFIL
+             ============================================================== -->
+        <section id="view-conta" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-box">
+              <h2>Minha Conta</h2>
+              <p>Gerenciamento de credenciais, dados cadastrais e transferências financeiras.</p>
+            </div>
+          </div>
+
+          <div class="account-overview-grid">
+            <div class="account-profile-card">
+              <div class="avatar-upload-wrapper" id="btn-change-avatar" title="Clique para alterar a foto de perfil">
+                <img src="./assets/images/user_avatar_1793115183912.jpg" alt="Avatar do Usuário" class="profile-avatar-large user-avatar-sync" id="profile-page-avatar" onerror="this.src='./assets/images/b3_building_hero_1793115167050.jpg'" />
+                <div class="avatar-upload-overlay">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                  </svg>
+                  <span>Alterar Foto</span>
+                </div>
+              </div>
+              <input type="file" id="user-avatar-file-input" accept="image/*" style="display:none;" />
+
+              <button class="btn-secondary" id="btn-open-avatar-modal" style="padding:4px 10px;font-size:11px;margin-bottom:8px;gap:6px;" title="Escolher entre avatares ou carregar foto">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span>Alterar Foto de Perfil</span>
+              </button>
+
+              <h3 style="font-size:18px;font-weight:800;" id="conta-user-name">Matheus Penicwh</h3>
+              <div class="verification-tag">● Conta Verificada</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:6px;" id="conta-user-email">matheuspeniche674@gmail.com</div>
+
+              <div class="account-action-list">
+                <div class="account-action-item" id="btn-action-depositar">
+                  <span>Depositar Recursos</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+                <div class="account-action-item" id="btn-action-sacar">
+                  <span>Resgatar via PIX</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+                <div class="account-action-item" id="btn-action-extrato">
+                  <span>Extrato de Negociações</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+                <div class="account-action-item" id="btn-action-editar-perfil">
+                  <span>Editar Dados do Perfil</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+                <div class="account-action-item" id="btn-action-login">
+                  <span>Configurações & Acesso</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+                <a href="/download/projeto-completo" download="two-by-projeto-completo.zip" class="account-action-item" style="text-decoration:none;border-color:rgba(0,180,255,0.4);background:rgba(0,180,255,0.08);">
+                  <span style="color:var(--b3-blue-light);font-weight:700;">📦 Baixar Projeto para GitHub (.ZIP)</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="color:var(--b3-blue-light);">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                </a>
+                <a href="/download/standalone" download="two-by-standalone.zip" class="account-action-item" style="text-decoration:none;border-color:rgba(0,214,160,0.3);background:rgba(0,214,160,0.05);">
+                  <span style="color:var(--bull-green);font-weight:700;">🌐 Baixar Versão Estática (HTML/CSS/JS)</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="color:var(--bull-green);">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <div class="panel-card">
+              <h3 class="panel-title" style="margin-bottom:16px;">Dados da conta</h3>
+              
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;">
+                <div style="background:var(--bg-surface);padding:14px;border-radius:var(--radius-md);">
+                  <div style="font-size:11px;color:var(--text-muted);">SALDO DISPONÍVEL</div>
+                  <div class="tabular-nums" style="font-size:20px;font-weight:800;color:var(--bull-green);margin-top:4px;" id="conta-saldo-disponivel">R$ 1.250,00</div>
+                </div>
+                <div style="background:var(--bg-surface);padding:14px;border-radius:var(--radius-md);">
+                  <div style="font-size:11px;color:var(--text-muted);">POSIÇÃO EM ABERTO</div>
+                  <div class="tabular-nums" style="font-size:20px;font-weight:800;margin-top:4px;">R$ 0,00</div>
+                </div>
+                <div style="background:var(--bg-surface);padding:14px;border-radius:var(--radius-md);">
+                  <div style="font-size:11px;color:var(--text-muted);">PATRIMÔNIO TOTAL</div>
+                  <div class="tabular-nums" style="font-size:20px;font-weight:800;color:var(--accent-cyan);margin-top:4px;" id="conta-patrimonio-total">R$ 12.548,32</div>
+                </div>
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:12px;font-size:13px;">
+                <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-subtle);">
+                  <span style="color:var(--text-secondary);">Nome:</span>
+                  <strong id="conta-titular-val">Matheus Penicwh</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-subtle);">
+                  <span style="color:var(--text-secondary);">CPF:</span>
+                  <strong class="tabular-nums" id="conta-user-cpf">***.123.456-**</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-subtle);">
+                  <span style="color:var(--text-secondary);">Banco:</span>
+                  <strong>Itaú</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-subtle);">
+                  <span style="color:var(--text-secondary);">Agência:</span>
+                  <strong class="tabular-nums">1234</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-subtle);">
+                  <span style="color:var(--text-secondary);">Conta:</span>
+                  <strong class="tabular-nums">56789-0</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL DE DETALHES DO ATIVO (CANDLESTICKS + FUNDAMENTOS)
+       ========================================================================== -->
+  <div class="modal-overlay" id="asset-detail-modal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-asset-title">PETR4 — Petrobras PN</h3>
+        <button class="modal-close-btn" aria-label="Fechar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-asset-body">
+        <!-- Preenchido via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL GENÉRICO (NOTÍCIA, DEPÓSITO, SAQUE, LOGIN, INSTRUÇÕES)
+       ========================================================================== -->
+  <div class="modal-overlay" id="generic-modal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 class="modal-title" id="generic-modal-title">Título</h3>
+        <button class="modal-close-btn" aria-label="Fechar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" id="generic-modal-body">
+        <!-- Preenchido via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTAINER DE TOASTS FLUTUANTES -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- SCRIPTS DA PLATAFORMA (ORDEM EXATA: DATA -> CHARTS -> APP) -->
+  <script src="./js/data.js"></script>
+  <script src="./js/charts.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>

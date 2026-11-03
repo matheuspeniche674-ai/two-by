@@ -1,0 +1,6 @@
+{
+  "name": "TWO BY - Mercado Financeiro & B3",
+  "description": "Plataforma de acompanhamento do mercado financeiro brasileiro e Bolsa de Valores B3, com cotações interativas, gráficos de candlesticks, carteira de investimentos e análises.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
