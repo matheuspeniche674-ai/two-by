@@ -1107,30 +1107,51 @@ const TwoByData = (function () {
           liveQuotes = data.quotes;
         }
       } catch (serverErr) {
-        // Fallback público direto para hospedagem estática (ex: GitHub Pages / Arc)
-        const tickers = ['PETR4', 'VALE3', 'ITUB4', 'WEGE3', 'BBAS3', 'BBDC4', 'MGLU3', 'RENT3', 'ABEV3', 'PRIO3', 'SUZB3', 'BOVA11', 'IVVB11', 'SMAL11', 'HASH11', 'MXRF11', 'HGLG11', 'KNIP11', 'XPML11'];
-        const brapiRes = await fetch(`https://brapi.dev/api/quote/${tickers.join(',')}`, { cache: 'no-store' });
-        if (brapiRes.ok) {
-          const brapiJson = await brapiRes.json();
-          if (Array.isArray(brapiJson.results)) {
-            liveQuotes = brapiJson.results.map(r => {
-              const price = Number(r.regularMarketPrice || 0);
-              const change = Number(r.regularMarketChangePercent || 0);
-              const changeAbs = Number(r.regularMarketChange || 0);
-              const vol = Number(r.regularMarketVolume || 0);
-              return {
-                ticker: r.symbol,
+        // Fallback público 100% gratuito com CORS para hospedagem estática (GitHub Pages / Arc)
+        const [brapiResult, awesomeResult] = await Promise.allSettled([
+          fetch('https://brapi.dev/api/quote/PETR4,VALE3,ITUB4,MGLU3', { cache: 'no-store' }).then(r => r.ok ? r.json() : null),
+          fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL,BTC-BRL', { cache: 'no-store' }).then(r => r.ok ? r.json() : null)
+        ]);
+
+        if (brapiResult.status === 'fulfilled' && brapiResult.value && Array.isArray(brapiResult.value.results)) {
+          brapiResult.value.results.forEach(r => {
+            const price = Number(r.regularMarketPrice || 0);
+            const change = Number(r.regularMarketChangePercent || 0);
+            const changeAbs = Number(r.regularMarketChange || 0);
+            const vol = Number(r.regularMarketVolume || 0);
+            liveQuotes.push({
+              ticker: r.symbol,
+              price: Number(price.toFixed(2)),
+              change: Number(change.toFixed(2)),
+              changeAbs: Number(changeAbs.toFixed(2)),
+              high: Number((r.regularMarketDayHigh || price).toFixed(2)),
+              low: Number((r.regularMarketDayLow || price).toFixed(2)),
+              volumeVal: vol,
+              volume: vol >= 1000000 ? `${(vol / 1000000).toFixed(1)}M` : `${(vol / 1000).toFixed(0)}k`,
+              lastUpdated: new Date().toISOString()
+            });
+          });
+        }
+
+        if (awesomeResult.status === 'fulfilled' && awesomeResult.value) {
+          const map = { USDBRL: awesomeResult.value.USDBRL, EURBRL: awesomeResult.value.EURBRL, BTCBRL: awesomeResult.value.BTCBRL };
+          Object.entries(map).forEach(([ticker, item]) => {
+            if (item && item.bid) {
+              const price = Number(item.bid);
+              const change = Number(item.pctChange || 0);
+              liveQuotes.push({
+                ticker,
                 price: Number(price.toFixed(2)),
                 change: Number(change.toFixed(2)),
-                changeAbs: Number(changeAbs.toFixed(2)),
-                high: Number((r.regularMarketDayHigh || price).toFixed(2)),
-                low: Number((r.regularMarketDayLow || price).toFixed(2)),
-                volumeVal: vol,
-                volume: vol >= 1000000 ? `${(vol / 1000000).toFixed(1)}M` : `${(vol / 1000).toFixed(0)}k`,
+                changeAbs: Number(item.varBid || 0),
+                high: Number(item.high || price),
+                low: Number(item.low || price),
+                volumeVal: 0,
+                volume: '0k',
                 lastUpdated: new Date().toISOString()
-              };
-            });
-          }
+              });
+            }
+          });
         }
       }
 
