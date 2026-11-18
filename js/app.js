@@ -586,76 +586,272 @@
   }
 
   /* ==========================================================================
-     SINCRONIZAÇÃO EM TEMPO REAL — DADOS OFICIAIS B3
+     SERVIÇO DE INTEGRAÇÃO OFICIAL DA B3 (API EM TEMPO REAL)
      ========================================================================== */
-  function initB3LiveSync() {
-    const btnSync = document.getElementById('btn-sync-b3-live');
-    if (btnSync) {
-      btnSync.addEventListener('click', () => {
-        triggerLiveB3Sync(true);
-      });
-    }
+  const B3LiveIntegrationService = {
+    apiEndpoint: '/api/b3/quotes',
+    historyEndpoint: '/api/b3/history',
+    pollingIntervalMs: 25000, // Ciclo automático a cada 25 segundos
+    pollingTimer: null,
+    isSyncing: false,
+    lastSyncTime: null,
+    lastQuoteCount: 0,
+    subscribers: [],
 
-    // Auto-refresh a cada 60s quando a página estiver visível
-    setInterval(() => {
-      if (document.visibilityState === 'visible') {
-        triggerLiveB3Sync(false);
+    /**
+     * Inicializa o serviço de integração com a API da B3
+     */
+    init() {
+      // 1. Configura o botão de sincronização manual na barra superior
+      const btnSync = document.getElementById('btn-sync-b3-live');
+      if (btnSync) {
+        btnSync.addEventListener('click', () => {
+          this.sync({ isUserAction: true, notify: true });
+        });
       }
-    }, 60000);
-  }
 
-  async function triggerLiveB3Sync(isUserAction = false) {
-    const btnSync = document.getElementById('btn-sync-b3-live');
-    const label = document.getElementById('b3-live-status-label');
-    if (btnSync) btnSync.classList.add('b3-syncing');
-    if (label) label.textContent = 'Sincronizando B3...';
+      // 2. Sincroniza imediatamente quando o usuário volta à aba do navegador
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          this.sync({ isUserAction: false, notify: false });
+        }
+      });
 
-    try {
-      const res = await TwoByData.syncLiveB3Quotes();
-      if (res && res.success) {
+      // 3. Dispara a primeira sincronização oficial IMEDIATAMENTE ao carregar
+      this.sync({ isUserAction: false, notify: false });
+
+      // 4. Inicia o agendamento contínuo em segundo plano
+      this.startPolling();
+    },
+
+    /**
+     * Inicia o ciclo de polling para atualizar cotações automaticamente
+     */
+    startPolling(intervalMs = this.pollingIntervalMs) {
+      this.stopPolling();
+      this.pollingIntervalMs = intervalMs;
+      this.pollingTimer = setInterval(() => {
+        if (document.visibilityState === 'visible') {
+          this.sync({ isUserAction: false, notify: false });
+        }
+      }, this.pollingIntervalMs);
+    },
+
+    /**
+     * Interrompe o polling automático
+     */
+    stopPolling() {
+      if (this.pollingTimer) {
+        clearInterval(this.pollingTimer);
+        this.pollingTimer = null;
+      }
+    },
+
+    /**
+     * Consulta cotações oficiais diretamente da API da B3 (/api/b3/quotes)
+     */
+    async fetchLiveQuotes() {
+      const response = await fetch(this.apiEndpoint, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Cache-Control': 'no-cache'
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`Falha HTTP ao consultar ${this.apiEndpoint}: status ${response.status}`);
+      }
+      const data = await response.json();
+      if (!data || !data.success || !Array.isArray(data.quotes)) {
+        throw new Error('Formato inválido retornado pela API da B3');
+      }
+      return data;
+    },
+
+    /**
+     * Sincroniza cotações em tempo real e popula dashboard, tabelas e gráficos
+     */
+    async sync({ isUserAction = false, notify = false } = {}) {
+      if (this.isSyncing) return;
+      this.isSyncing = true;
+      this.setUIState('syncing');
+
+      try {
+        // Dispara a sincronização mestre de dados através do TwoByData (forçando atualização sem cache no clique)
+        const res = await TwoByData.syncLiveB3Quotes(isUserAction);
+        
+        if (res && res.success) {
+          this.lastSyncTime = new Date();
+          this.lastQuoteCount = res.count || (res.quotes ? res.quotes.length : 0);
+
+          // Atualiza estado visual no cabeçalho com horário preciso
+          this.setUIState('success', this.lastSyncTime);
+
+          // Popula todos os dados em tempo real no Dashboard e nas Tabelas
+          this.populateAll();
+
+          // Também atualiza o gráfico candlestick se for ação manual
+          if (isUserAction) {
+            renderStockChart(state.selectedStock, state.selectedTimeframe);
+          }
+
+          // Notifica eventuais inscritos
+          this.notifySubscribers({
+            success: true,
+            quotes: res.quotes || [],
+            timestamp: this.lastSyncTime,
+            isUserAction
+          });
+
+          if (notify || isUserAction) {
+            showToast(`Dados oficiais da B3 conectados e sincronizados com sucesso (${this.lastQuoteCount} ativos atualizados)!`, 'success');
+          }
+        } else {
+          this.setUIState('idle');
+          if (notify || isUserAction) {
+            showToast('Cotações locais mantidas.', 'info');
+          }
+        }
+      } catch (err) {
+        console.warn('B3LiveIntegrationService: Erro durante a sincronização:', err);
+        this.setUIState('error');
+        if (notify || isUserAction) {
+          showToast('Servidor B3 ocupado. Utilizando dados locais em cache.', 'error');
+        }
+      } finally {
+        this.isSyncing = false;
+      }
+    },
+
+    /**
+     * Atualiza os estados visuais dos botões, badges e indicadores
+     */
+    setUIState(stateType, dateObj = new Date()) {
+      const btnSync = document.getElementById('btn-sync-b3-live');
+      const label = document.getElementById('b3-live-status-label');
+
+      if (stateType === 'syncing') {
+        if (btnSync) btnSync.classList.add('b3-syncing');
+        if (label) label.textContent = 'Sincronizando B3...';
+      } else if (stateType === 'success') {
+        if (btnSync) btnSync.classList.remove('b3-syncing');
         if (label) {
-          const timeStr = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+          const timeStr = dateObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
           label.textContent = `B3 Oficial • ${timeStr}`;
         }
-
-        // Atualiza etiqueta no topo do banner hero
-        const heroBadge = document.querySelector('.hero-live-badge span:last-child');
-        const ibov = TwoByData.getIndices().find(i => i.id === 'ibovespa');
-        if (heroBadge && ibov) {
-          heroBadge.textContent = `B3 | AO VIVO • Ibovespa ${ibov.displayValue} (${ibov.changeFormatted})`;
-        }
-
-        // Atualiza todas as tabelas e cartões com os novos preços reais
-        refreshCurrentViews();
-
-        if (isUserAction) {
-          showToast(`Dados oficiais da B3 sincronizados com sucesso (${res.count} ativos atualizados)!`, 'success');
-        }
-      } else {
+        this.updateHeaderAndSidebarBadges(dateObj);
+      } else if (stateType === 'error') {
+        if (btnSync) btnSync.classList.remove('b3-syncing');
         if (label) label.textContent = 'B3 Oficial Conectada';
-        if (isUserAction) {
-          showToast('Cotações locais atualizadas.', 'info');
-        }
+      } else {
+        if (btnSync) btnSync.classList.remove('b3-syncing');
+        if (label) label.textContent = 'B3 Oficial Conectada';
       }
-    } catch (err) {
-      if (label) label.textContent = 'B3 Oficial Conectada';
-    } finally {
-      if (btnSync) btnSync.classList.remove('b3-syncing');
+    },
+
+    /**
+     * Atualiza badges no topo do hero carousel e na barra lateral
+     */
+    updateHeaderAndSidebarBadges(dateObj) {
+      // 1. Badge no topo do hero carousel
+      const heroBadge = document.querySelector('.hero-live-badge span:last-child');
+      const ibov = TwoByData.getIndices().find(i => i.id === 'ibovespa');
+      if (heroBadge && ibov) {
+        heroBadge.textContent = `B3 | AO VIVO • Ibovespa ${ibov.displayValue} (${ibov.changeFormatted})`;
+      }
+
+      // 2. Status do mercado na sidebar
+      const marketPill = document.querySelector('.market-status-pill span:last-child');
+      if (marketPill) {
+        const timeStr = dateObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        const dateStr = dateObj.toLocaleDateString('pt-BR');
+        marketPill.textContent = `Mercado Aberto • ${timeStr} - ${dateStr}`;
+      }
+    },
+
+    /**
+     * Popula todos os dados em tempo real no Dashboard e nas Tabelas
+     */
+    populateAll() {
+      // 1. CARDS DE ÍNDICES DO MERCADO (Ibovespa, Dólar, IFIX, S&P 500)
+      renderIndicesCards();
+
+      // 2. CABEÇALHO DO ATIVO SELECIONADO & SIMULADOR DE ORDENS
+      updateStockHeader(state.selectedStock);
+
+      // 3. TABELA DE MAIORES ALTAS E MAIORES BAIXAS (Dashboard)
+      renderAltasBaixasTable();
+
+      // 4. PREVIEW DA CARTEIRA & GRÁFICO DONUT (Dashboard)
+      renderCarteiraPreview();
+      renderDonutPortfolio();
+
+      // 5. TABELA COMPLETA DE AÇÕES (View Ações)
+      renderAcoesTable();
+
+      // 6. TABELA COMPLETA DE ETFS (View ETFs)
+      initEtfsView();
+
+      // 7. TABELA COMPLETA DE FIIS (View FIIs)
+      initFiisView();
+
+      // 8. CARDS DA VIEW MERCADOS
+      renderMercadosPage();
+
+      // 9. TABELA DA CARTEIRA COMPLETA (Posições reais)
+      renderCarteiraPage();
+    },
+
+    /**
+     * Inscreve um callback para ser notificado de atualizações
+     */
+    subscribe(callback) {
+      if (typeof callback === 'function') {
+        this.subscribers.push(callback);
+      }
+    },
+
+    /**
+     * Remove um callback inscrito
+     */
+    unsubscribe(callback) {
+      this.subscribers = this.subscribers.filter(cb => cb !== callback);
+    },
+
+    notifySubscribers(data) {
+      this.subscribers.forEach(cb => {
+        try { cb(data); } catch (e) { console.error('Erro em subscriber B3:', e); }
+      });
+    },
+
+    /**
+     * Retorna o status atual do serviço
+     */
+    getStatus() {
+      return {
+        isConnected: true,
+        isSyncing: this.isSyncing,
+        lastSyncTime: this.lastSyncTime,
+        lastQuoteCount: this.lastQuoteCount,
+        pollingIntervalMs: this.pollingIntervalMs
+      };
     }
+  };
+
+  // Expõe o serviço globalmente no window para facilidade de integração e depuração
+  window.B3IntegrationService = B3LiveIntegrationService;
+
+  // Funções de compatibilidade
+  function initB3LiveSync() {
+    B3LiveIntegrationService.init();
+  }
+
+  function triggerLiveB3Sync(isUserAction = false) {
+    return B3LiveIntegrationService.sync({ isUserAction, notify: isUserAction });
   }
 
   function refreshCurrentViews() {
-    renderIndicesCards();
-    updateStockHeader(state.selectedStock);
-    renderAltasBaixasTable();
-    renderCarteiraPreview();
-    renderDonutPortfolio();
-
-    if (state.currentView === 'view-acoes') renderAcoesTable();
-    if (state.currentView === 'view-mercados') renderMercadosPage();
-    if (state.currentView === 'view-carteira') renderCarteiraPage();
-    if (state.currentView === 'view-etfs') initEtfsView();
-    if (state.currentView === 'view-fiis') initFiisView();
+    B3LiveIntegrationService.populateAll();
   }
 
   /* ==========================================================================

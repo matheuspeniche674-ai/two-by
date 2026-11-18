@@ -28,11 +28,11 @@ const quotesCache: { [key: string]: CacheEntry } = {};
 const CACHE_TTL_MS = 15000; // 15 segundos de cache
 
 // Helper para buscar dados no Yahoo Finance com User-Agent apropriado
-async function fetchYahooQuote(symbol: string, range: string = '5d', interval: string = '1d') {
+async function fetchYahooQuote(symbol: string, range: string = '5d', interval: string = '1d', forceRefresh: boolean = false) {
   const cacheKey = `${symbol}_${range}_${interval}`;
   const now = Date.now();
 
-  if (quotesCache[cacheKey] && now - quotesCache[cacheKey].timestamp < CACHE_TTL_MS) {
+  if (!forceRefresh && quotesCache[cacheKey] && now - quotesCache[cacheKey].timestamp < CACHE_TTL_MS) {
     return quotesCache[cacheKey].data;
   }
 

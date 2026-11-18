@@ -1091,14 +1091,50 @@ const TwoByData = (function () {
   let isLiveOfficial = false;
   let lastSyncTimestamp = null;
 
-  async function syncLiveB3Quotes() {
+  async function syncLiveB3Quotes(force = false) {
     try {
-      const res = await fetch('/api/b3/quotes');
-      if (!res.ok) throw new Error('Falha HTTP ao consultar /api/b3/quotes');
-      const data = await res.json();
-      if (!data.success || !Array.isArray(data.quotes)) throw new Error('Dados inválidos');
+      let liveQuotes = [];
+      const cacheBust = `t=${Date.now()}${force ? '&force=1' : ''}`;
 
-      const liveQuotes = data.quotes;
+      try {
+        const res = await fetch(`/api/b3/quotes?${cacheBust}`, {
+          cache: 'no-store',
+          headers: { 'Cache-Control': 'no-cache' }
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (data.success && Array.isArray(data.quotes) && data.quotes.length > 0) {
+          liveQuotes = data.quotes;
+        }
+      } catch (serverErr) {
+        // Fallback público direto para hospedagem estática (ex: GitHub Pages / Arc)
+        const tickers = ['PETR4', 'VALE3', 'ITUB4', 'WEGE3', 'BBAS3', 'BBDC4', 'MGLU3', 'RENT3', 'ABEV3', 'PRIO3', 'SUZB3', 'BOVA11', 'IVVB11', 'SMAL11', 'HASH11', 'MXRF11', 'HGLG11', 'KNIP11', 'XPML11'];
+        const brapiRes = await fetch(`https://brapi.dev/api/quote/${tickers.join(',')}`, { cache: 'no-store' });
+        if (brapiRes.ok) {
+          const brapiJson = await brapiRes.json();
+          if (Array.isArray(brapiJson.results)) {
+            liveQuotes = brapiJson.results.map(r => {
+              const price = Number(r.regularMarketPrice || 0);
+              const change = Number(r.regularMarketChangePercent || 0);
+              const changeAbs = Number(r.regularMarketChange || 0);
+              const vol = Number(r.regularMarketVolume || 0);
+              return {
+                ticker: r.symbol,
+                price: Number(price.toFixed(2)),
+                change: Number(change.toFixed(2)),
+                changeAbs: Number(changeAbs.toFixed(2)),
+                high: Number((r.regularMarketDayHigh || price).toFixed(2)),
+                low: Number((r.regularMarketDayLow || price).toFixed(2)),
+                volumeVal: vol,
+                volume: vol >= 1000000 ? `${(vol / 1000000).toFixed(1)}M` : `${(vol / 1000).toFixed(0)}k`,
+                lastUpdated: new Date().toISOString()
+              };
+            });
+          }
+        }
+      }
+
+      if (!liveQuotes.length) throw new Error('Nenhuma cotação retornada pela API');
 
       // Atualiza ações
       stocks.forEach(stock => {
